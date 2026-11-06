@@ -306,7 +306,9 @@ body.touch-on .h-speed { font-size: 22px; text-align: center; }
   .tab { padding: 10px 8px; font-size: 10px; }
 }
 @media (max-width: 560px) and (orientation: portrait) {
-  body.touch-on .h-gauges { left: max(8px, var(--safe-l)); transform: none; bottom: auto; top: 150px; width: 128px; }
+  body.touch-on .h-gauges { left: max(8px, var(--safe-l)); transform: none; bottom: auto; top: 172px; width: 128px; }
+  .stick { width: 130px; height: 130px; }
+  .tbtns { transform: scale(0.85); transform-origin: bottom right; }
   body.touch-on .h-weapons { top: 116px; }
   .h-pause { left: auto; right: max(8px, var(--safe-r)); top: auto; bottom: 250px; }
   .h-target { top: 64px; }
