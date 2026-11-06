@@ -308,8 +308,16 @@ export class Garage {
       case 'dup': { const c = cloneDesign(d); delete c.preset; c.name = d.name.slice(0, 18) + ' II'; this.game.designs.push(c); this.game.currentId = c.id; this.open(c); this.game.saveDesign(c); a.sfx('ui_select'); break; }
       case 'del': {
         if (d.preset) { this.game.toast('Factory cars can\'t be scrapped.'); a.sfx('ui_error'); break; }
-        if (!confirm(`Scrap "${d.name}"?`)) break;
-        this.game.deleteDesign(d.id); this.open(this.game.currentDesign()); break;
+        // two-tap confirm (native confirm() dialogs are blocked in sandboxed frames)
+        const now = performance.now();
+        if (this._delArm !== d.id || now - this._delT > 3000) {
+          this._delArm = d.id; this._delT = now;
+          t.textContent = 'Sure?'; this.game.toast(`Tap Del again to scrap "${d.name}"`); a.sfx('ui_error');
+          setTimeout(() => { if (t.isConnected) t.textContent = 'Del'; }, 3000);
+          break;
+        }
+        this._delArm = null;
+        this.game.deleteDesign(d.id); this.open(this.game.currentDesign()); a.sfx('explosion_small'); break;
       }
       case 'back': a.sfx('ui_click'); this.game.show('title'); break;
       case 'battle': if (this.valid) { a.sfx('ui_select'); this.game.show('setup'); } else a.sfx('ui_error'); break;
