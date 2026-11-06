@@ -1,0 +1,11 @@
+{
+  "name": "neon-wreckers-2086",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:artifact": "node tools/build-artifact.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2"
+  }
+}
