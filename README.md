@@ -4,7 +4,9 @@ An 80s-flavoured vehicular combat arena game built with three.js, inspired by th
 It's the 2080s and civilisation has gone sideways, but the vibe is pure neon sunset: armed electric cars,
 chrome, palm trees, and a pumping synthwave soundtrack.
 
-**Play:** serve the folder with any static web server and open `index.html`. ES modules won't load from
+**Play now:** [Neon Wreckers 2086 artifact](https://claude.ai/artifact/5CKPf9P9xdLkAEqr4wiNmS) (private to the owner unless shared). Single-file build: `npm install && npm run build:artifact` → `dist/neon-wreckers-2086.html`.
+
+**Play locally:** serve the folder with any static web server and open `index.html`. ES modules won't load from
 `file://`. For example:
 
 ```bash

@@ -270,7 +270,7 @@ class Game {
         <td class="${v.out ? 'out' : ''}">${v.out ? v.outReason : 'Survived'}</td><td>${v.score.kills}</td><td>${Math.round(v.score.dmgDealt)}</td><td>${acc}</td></tr>`;
     }).join('');
     $('#res-body').innerHTML = `<div class="res-banner ${r.won ? 'win' : 'lose'}">${r.won ? 'VICTORY!' : P.out ? 'WRECKED' : 'OUTGUNNED'}</div>
-      <table class="res-table"><tr><th>#</th><th>Car</th><th>Status</th><th>Wrecks</th><th>Damage</th><th>Accuracy</th></tr>${rows}</table>
+      <div class="res-wrap"><table class="res-table"><tr><th>#</th><th>Car</th><th>Status</th><th>Wrecks</th><th>Dmg</th><th>Acc</th></tr>${rows}</table></div>
       <div class="res-prize">Prize money: ${money(r.prize)}</div>`;
     this.show('results');
     this.music(r.won ? 'victory' : 'defeat');

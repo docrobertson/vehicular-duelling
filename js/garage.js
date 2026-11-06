@@ -14,7 +14,7 @@ const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt
 
 const TABS = [
   ['body', 'Body'], ['power', 'Power'], ['chassis', 'Chassis'], ['armor', 'Armor'],
-  ['weapons', 'Weapons'], ['gear', 'Gear'], ['crew', 'Crew & Paint'],
+  ['weapons', 'Weapons'], ['gear', 'Gear'], ['crew', 'Crew'],
 ];
 
 export class Garage {
@@ -327,8 +327,15 @@ export class Garage {
   onInput(e, commit) {
     const t = e.target, d = this.design;
     if (t.id === 'g-list' && commit) { this.game.currentId = t.value; this.open(this.game.currentDesign()); this.game.audio.sfx('ui_click'); return; }
-    if (t.id === 'g-name') { d.name = t.value.trim() || 'Nameless'; if (commit) this.changed(false); else { this.game.saveDesign(d, true); this.root.querySelector('#g-list').selectedOptions[0].textContent = d.name; } return; }
-    if (t.id === 'g-driver') { d.driver = { ...(d.driver || {}), name: t.value.trim() || 'You' }; this.game.saveDesign(d, true); return; }
+    if (t.id === 'g-name' || t.id === 'g-driver') {
+      const forked = d.preset; const dd = forked ? this.forkPreset() : d;
+      if (t.id === 'g-name') dd.name = t.value.trim() || 'Nameless';
+      else dd.driver = { ...(dd.driver || {}), name: t.value.trim() || 'You' };
+      this.game.saveDesign(dd, true);
+      if (commit || forked) this.render(true);
+      else if (t.id === 'g-name') this.root.querySelector('#g-list').selectedOptions[0].textContent = dd.name;
+      return;
+    }
     if (t.dataset.armr) {
       const dd = d.preset ? this.forkPreset() : d;
       dd.armor[t.dataset.armr] = +t.value;
