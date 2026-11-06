@@ -180,7 +180,7 @@ export class Vehicle {
     const kW = this.phys.spec.kW * pm * thr * (this.input.boost ? this.phys.spec.boostMul : 1);
     this.energy = Math.max(0, this.energy - kW * dt * 2 / 3600 - 0.0004 * dt);
     // heat
-    this.heat += this.motorHeat * thr * (this.input.boost ? 6 : 1.8) * dt;
+    this.heat += this.motorHeat * thr * (this.input.boost ? 14 : 1.8) * dt;
     if (this.burning > 0) {
       this.burning -= dt * (this.acc.extinguish ? 4 : 1);
       this.heat += 7 * dt;

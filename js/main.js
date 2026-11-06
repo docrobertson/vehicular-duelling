@@ -128,6 +128,7 @@ class Game {
     $('#scr-' + name).classList.add('on');
     this.screen = name;
     this.input.enabled = name === 'battle';
+    if (this.battle && !['battle', 'results'].includes(name)) this.endBattle();
     if (name === 'title') { this.renderCareer(); if (!this.demo) this.startDemo(); this.music('menu'); }
     if (name === 'garage') { this.garage.open(this.currentDesign()); this.music('menu'); }
     if (name === 'setup') this.renderSetup();
