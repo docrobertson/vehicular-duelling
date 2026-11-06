@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a0638" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Neon Wreckers 2086</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/build/three.module.min.js", "three/addons/": "./vendor/three/examples/jsm/" } }
+  </script>
+</head>
+<body>
+  <canvas id="gl"></canvas>
+
+  <!-- TITLE -->
+  <section class="screen" id="scr-title">
+    <div class="title-wrap">
+      <div class="logo">
+        <div class="logo-top">NEON</div>
+        <div class="logo-main">WRECKERS</div>
+        <div class="logo-year">2086</div>
+      </div>
+      <div class="tagline">Armed electric cars · Arena combat · Totally radical</div>
+      <div class="menu">
+        <button class="btn hot big" data-go="setup">Quick Battle</button>
+        <button class="btn big" data-go="garage">Garage</button>
+        <button class="btn big locked" data-go="campaign">Road Campaign <small>soon</small></button>
+        <div class="menu-row">
+          <button class="btn ghost" data-go="help">How to Play</button>
+          <button class="btn ghost" data-go="settings">Settings</button>
+        </div>
+      </div>
+      <div class="career" id="career"></div>
+    </div>
+    <div class="tap-start" id="tap-start">TAP / CLICK TO START</div>
+  </section>
+
+  <!-- GARAGE -->
+  <section class="screen" id="scr-garage"></section>
+
+  <!-- SETUP -->
+  <section class="screen panel-screen" id="scr-setup">
+    <div class="sheet">
+      <h2>Quick Battle</h2>
+      <div class="setup-grid">
+        <div>
+          <h4>Your Ride</h4>
+          <div class="pick-cars" id="pick-cars"></div>
+        </div>
+        <div>
+          <h4>Format</h4>
+          <div class="seg" id="pick-mode">
+            <button data-v="ffa4">Free-for-all · 4</button>
+            <button data-v="ffa6">Free-for-all · 6</button>
+            <button data-v="t2">Teams 2v2</button>
+            <button data-v="t3">Teams 3v3</button>
+            <button data-v="t4">Teams 4v4</button>
+          </div>
+          <h4>Arena</h4>
+          <div class="seg" id="pick-arena"></div>
+          <h4>Opposition</h4>
+          <div class="seg" id="pick-diff">
+            <button data-v="rookie">Rookie</button>
+            <button data-v="pro">Pro</button>
+            <button data-v="legend">Legend</button>
+          </div>
+          <div class="bracket" id="bracket"></div>
+        </div>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn ghost" data-go="title">◀ Back</button>
+        <button class="btn" data-go="garage">Garage</button>
+        <button class="btn hot" id="btn-start">Start Your Motors ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BATTLE HUD -->
+  <section class="screen hud" id="scr-battle">
+    <div id="hud"></div>
+    <div id="touch" class="touch"></div>
+  </section>
+
+  <!-- PAUSE -->
+  <section class="screen panel-screen overlay" id="scr-pause">
+    <div class="sheet small">
+      <h2>Paused</h2>
+      <div class="menu">
+        <button class="btn hot" id="btn-resume">Resume</button>
+        <button class="btn" id="btn-restart">Restart</button>
+        <button class="btn" id="btn-camera">Camera: <span id="cam-name">High</span></button>
+        <button class="btn" id="btn-mute">Sound: <span id="mute-name">On</span></button>
+        <button class="btn ghost" id="btn-quit">Quit to Garage</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen panel-screen" id="scr-results">
+    <div class="sheet">
+      <h2 id="res-title">Results</h2>
+      <div id="res-body"></div>
+      <div class="sheet-actions">
+        <button class="btn ghost" data-go="title">Menu</button>
+        <button class="btn" data-go="garage">Garage</button>
+        <button class="btn hot" id="btn-again">Rematch ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HELP -->
+  <section class="screen panel-screen" id="scr-help">
+    <div class="sheet">
+      <h2>How to Play</h2>
+      <div class="help">
+        <div>
+          <h4>Keyboard &amp; Mouse</h4>
+          <table>
+            <tr><td>W / ↑</td><td>Accelerate</td></tr>
+            <tr><td>S / ↓</td><td>Brake / reverse</td></tr>
+            <tr><td>A D / ← →</td><td>Steer</td></tr>
+            <tr><td>Space / Left click</td><td>Fire front weapons</td></tr>
+            <tr><td>F / Right click</td><td>Fire turret</td></tr>
+            <tr><td>Q / E</td><td>Fire left / right weapons</td></tr>
+            <tr><td>R</td><td>Fire rear guns &amp; droppers</td></tr>
+            <tr><td>Shift</td><td>Overdrive boost (heat + battery)</td></tr>
+            <tr><td>X</td><td>Handbrake drift</td></tr>
+            <tr><td>Tab</td><td>Cycle target</td></tr>
+            <tr><td>C</td><td>Camera</td></tr>
+            <tr><td>Esc / P</td><td>Pause · M mute</td></tr>
+          </table>
+          <h4>Gamepad</h4>
+          <p>Stick steers · RT/LT drive · A front · B turret · X rear · LB/RB sides · Y boost · Start pause</p>
+        </div>
+        <div>
+          <h4>Touch</h4>
+          <p>Left stick: push up to drive, down to brake/reverse, sideways to steer. Right buttons fire weapon groups, boost and drift.</p>
+          <h4>The Rules of the Road</h4>
+          <ul>
+            <li><b>Armor</b> is tracked per side — front, back, left, right, top &amp; under. Breach a side and hits chew into weapons, motor, battery, crew and tires.</li>
+            <li><b>Heat</b> builds from lasers, heavy guns, boosting and fire. Overheat and big guns jam and your motor throttles back. Heat sinks help.</li>
+            <li><b>Battery</b> powers your motor, boost and energy weapons. Run dry and you crawl.</li>
+            <li>A <b>gunner</b> auto-aims the turret and side guns, and takes the wheel if the driver goes down.</li>
+            <li><b>Ram</b> with spikes for big damage. Speed &amp; mass matter.</li>
+            <li>Grab glowing <b>crates</b>: green repairs, yellow re-arms, cyan cools &amp; recharges.</li>
+            <li><b>Brackets</b>: your car's total cost sets your division; opponents are built to the same budget.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sheet-actions"><button class="btn hot" data-go="title">Got it ▶</button></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="screen panel-screen" id="scr-settings">
+    <div class="sheet small">
+      <h2>Settings</h2>
+      <div class="settings">
+        <label>Graphics
+          <select id="set-quality"><option value="high">High (bloom)</option><option value="medium">Medium</option><option value="low">Low (mobile saver)</option></select>
+        </label>
+        <label>Music <input type="range" id="set-music" min="0" max="1" step="0.05" /></label>
+        <label>Effects <input type="range" id="set-sfx" min="0" max="1" step="0.05" /></label>
+        <label class="chk"><input type="checkbox" id="set-shake" /> Screen shake</label>
+        <label class="chk"><input type="checkbox" id="set-touch" /> Force touch controls</label>
+      </div>
+      <div class="sheet-actions"><button class="btn hot" data-go="back">Done</button></div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+  <div class="scanlines"></div>
+  <div class="loading" id="loading">LOADING…</div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
